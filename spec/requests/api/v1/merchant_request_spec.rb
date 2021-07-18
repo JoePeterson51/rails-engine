@@ -20,7 +20,7 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can get page 2 of merchants' do
-    get '/api/v1/merchants?page=0'
+    get '/api/v1/merchants?page=1'
     merchants = JSON.parse(response.body, symbolize_names: true)
     merchant1 = Merchant.where(id: 41).pluck(:id)
     merchant21 = Merchant.where(id:61).pluck(:id)
@@ -28,7 +28,7 @@ RSpec.describe 'Merchants API' do
     expect(merchants[:data].first[:id].to_i).to eq(merchant1[0])
     expect(merchants[:data].first[:id].to_i).to_not eq(merchant21[0])
 
-    get '/api/v1/merchants?page=1'
+    get '/api/v1/merchants?page=2'
     merchants = JSON.parse(response.body, symbolize_names: true)
     expect(merchants[:data].first[:id].to_i).to eq(merchant21[0])
     expect(merchants[:data].first[:id].to_i).to_not eq(merchant1[0])
