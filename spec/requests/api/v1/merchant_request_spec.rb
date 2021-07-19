@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Merchants API' do
-  before :each do
-    create_list(:merchant, 40)
-  end
   it 'sends merchants in pages of 20 by default' do
+    create_list(:merchant, 40)
     get '/api/v1/merchants'
     merchants = JSON.parse(response.body, symbolize_names: true)
 
@@ -20,6 +18,7 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can get page 2 of merchants' do
+    create_list(:merchant, 40)
     get '/api/v1/merchants?page=1'
     merchants = JSON.parse(response.body, symbolize_names: true)
     merchant1 = Merchant.first[:id]
@@ -35,6 +34,7 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can send more merchants with per_page param' do
+    create_list(:merchant, 40)
     get '/api/v1/merchants?per_page=30'
 
     merchants = JSON.parse(response.body, symbolize_names: true)
@@ -43,9 +43,19 @@ RSpec.describe 'Merchants API' do
   end
 
   it 'can return one merchant' do
+    create_list(:merchant, 40)
     get "/api/v1/merchants/#{Merchant.first[:id]}"
     merchant = JSON.parse(response.body, symbolize_names: true)
 
     expect(merchant[:data][:id]).to eq(Merchant.first[:id].to_s)
+  end
+
+  it 'can return all the merchants items' do
+    merchant1 = FactoryBot.create(:merchant)
+    item1 = FactoryBot.create(:item, merchant: merchant1)
+    get "/api/v1/merchants/#{merchant1.id}/items"
+    item = JSON.parse(response.body, symbolize_names: true)
+    # require 'pry'; binding.pry
+    expect(item[:data].first[:id].to_i).to eq(item1.id)
   end
 end
