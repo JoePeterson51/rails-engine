@@ -19,7 +19,9 @@ RSpec.describe 'Merchants API' do
 
   it 'can get page 2 of merchants' do
     create_list(:merchant, 40)
+
     get '/api/v1/merchants?page=1'
+
     merchants = JSON.parse(response.body, symbolize_names: true)
     merchant1 = Merchant.first[:id]
     merchant21 = Merchant.last[:id]

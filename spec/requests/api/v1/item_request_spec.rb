@@ -9,6 +9,9 @@ RSpec.describe 'items request' do
     get '/api/v1/items'
     items = JSON.parse(response.body, symbolize_names: true)
 
+    expect(items[:data].count).to eq(20)
+    expect(Item.all.count).to eq(40)
+
     items[:data].each do |item|
       expect(item).to have_key(:id)
       expect(item[:id]).to be_a(String)
@@ -28,5 +31,52 @@ RSpec.describe 'items request' do
       expect(item[:attributes]).to have_key(:merchant_id)
       expect(item[:attributes][:merchant_id]).to be_an(Integer)
     end
+  end
+
+  it 'can get page 2 of items' do
+    merchant1 = FactoryBot.create(:merchant)
+    merchant2 = FactoryBot.create(:merchant)
+    create_list(:item, 20, merchant: merchant1)
+    create_list(:item, 20, merchant: merchant2)
+
+    get '/api/v1/items?page=1'
+
+    items = JSON.parse(response.body, symbolize_names: true)
+    item1 = Item.first[:id]
+    item2 = Item.last[:id]
+
+    expect(items[:data].first[:id].to_i).to eq(item1)
+    expect(items[:data].first[:id].to_i).to_not eq(item2)
+
+    get '/api/v1/items?page=2'
+    items = JSON.parse(response.body, symbolize_names: true)
+
+    expect(items[:data].last[:id].to_i).to eq(item2)
+    expect(items[:data].first[:id].to_i).to_not eq(item1)
+  end
+
+  it 'can send more merchants with per_page param' do
+    merchant1 = FactoryBot.create(:merchant)
+    merchant2 = FactoryBot.create(:merchant)
+    create_list(:item, 20, merchant: merchant1)
+    create_list(:item, 20, merchant: merchant2)
+
+    get '/api/v1/items?per_page=30'
+
+    items = JSON.parse(response.body, symbolize_names: true)
+
+    expect(items[:data].count).to eq(30)
+  end
+
+  it 'can return one item' do
+    merchant1 = FactoryBot.create(:merchant)
+    merchant2 = FactoryBot.create(:merchant)
+    create_list(:item, 20, merchant: merchant1)
+    create_list(:item, 20, merchant: merchant2)
+
+    get "/api/v1/items/#{Item.first[:id]}"
+    item = JSON.parse(response.body, symbolize_names: true)
+
+    expect(item[:data][:id]).to eq(Item.first[:id].to_s)
   end
 end

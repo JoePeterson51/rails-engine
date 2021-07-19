@@ -9,4 +9,9 @@ class Api::V1::ItemsController < ApplicationController
     @items = Item.offset(page * per_page).limit(per_page)
     render json: ItemSerializer.new(@items).serializable_hash.to_json
   end
+
+  def show
+    @item = Item.find(params["id"].to_i)
+    render json: ItemSerializer.new(@item).serializable_hash.to_json
+  end
 end
