@@ -22,8 +22,24 @@ class Api::V1::ItemsController < ApplicationController
         status: 201
     else
       render json: {status: 'ERROR', message: 'Item not saved',
-        data:item.errors}, status: :unprocessable_entity
+        data:item.errors}, status: 404
     end
+  end
+
+  def update
+    item = Item.find(params["id"].to_i)
+    if item.update(item_params)
+      render json: ItemSerializer.new(item).serializable_hash.to_json,
+        status: 200
+    else
+      render json: {status: 'ERROR', message: 'Item not updated',
+        data:item.errors}, status: 404
+    end
+  end
+
+  def destroy
+    item = Item.find(params["id"].to_i)
+    Item.destroy(item.id)
   end
 
   private
