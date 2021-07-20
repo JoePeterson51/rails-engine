@@ -1,11 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe 'items request' do
-  it 'can request all items' do
+RSpec.describe 'items index request' do
+  before :each do
     merchant1 = FactoryBot.create(:merchant)
     merchant2 = FactoryBot.create(:merchant)
     create_list(:item, 20, merchant: merchant1)
     create_list(:item, 20, merchant: merchant2)
+  end
+
+  it 'can request all items' do
     get '/api/v1/items'
     items = JSON.parse(response.body, symbolize_names: true)
 
@@ -34,11 +37,6 @@ RSpec.describe 'items request' do
   end
 
   it 'can get page 2 of items' do
-    merchant1 = FactoryBot.create(:merchant)
-    merchant2 = FactoryBot.create(:merchant)
-    create_list(:item, 20, merchant: merchant1)
-    create_list(:item, 20, merchant: merchant2)
-
     get '/api/v1/items?page=1'
 
     items = JSON.parse(response.body, symbolize_names: true)
@@ -56,27 +54,10 @@ RSpec.describe 'items request' do
   end
 
   it 'can send more merchants with per_page param' do
-    merchant1 = FactoryBot.create(:merchant)
-    merchant2 = FactoryBot.create(:merchant)
-    create_list(:item, 20, merchant: merchant1)
-    create_list(:item, 20, merchant: merchant2)
-
     get '/api/v1/items?per_page=30'
 
     items = JSON.parse(response.body, symbolize_names: true)
 
     expect(items[:data].count).to eq(30)
-  end
-
-  it 'can return one item' do
-    merchant1 = FactoryBot.create(:merchant)
-    merchant2 = FactoryBot.create(:merchant)
-    create_list(:item, 20, merchant: merchant1)
-    create_list(:item, 20, merchant: merchant2)
-
-    get "/api/v1/items/#{Item.first[:id]}"
-    item = JSON.parse(response.body, symbolize_names: true)
-
-    expect(item[:data][:id]).to eq(Item.first[:id].to_s)
   end
 end
