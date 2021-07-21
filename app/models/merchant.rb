@@ -13,4 +13,14 @@ class Merchant < ApplicationRecord
   def self.find_all_by_name(search)
     Merchant.where('lower(name) LIKE ?', "%#{search.downcase}%")
   end
+
+  def self.find_top_revenue(merchant_amount)
+    joins(items: {invoice_items: {invoice: :transactions}})
+    .where("transactions.result = ?", 'success')
+    .where("invoices.status = ?", 'shipped')
+    .group(:id)
+    .select("merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
+    .order(revenue: :desc)
+    .limit(merchant_amount)
+  end
 end

@@ -18,4 +18,13 @@ class Api::V1::MerchantsSearchController < ApplicationController
       render json: { data: {} }, status: 400
     end
   end
+
+  def most_revenue
+    if params["quantity"].present? && params["quantity"].to_i != 0
+      merchant = Merchant.find_top_revenue(params["quantity"].to_i)
+      self.create_render(merchant, MerchantRevenueSerializer)
+    else
+      render json: { error: "Merchant(s) Not Found", data: {} }, status: 400
+    end
+  end
 end
