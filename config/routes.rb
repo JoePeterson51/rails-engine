@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/api/v1/merchants/find', to: 'api/v1/merchants_search#find'
   get '/api/v1/merchants/find_all', to: 'api/v1/merchants_search#find_all'
   get '/api/v1/revenue/merchants', to: 'api/v1/merchants_search#most_revenue'
+  get '/api/v1/merchants/most_items', to: 'api/v1/merchants_search#most_items'
 
   namespace :api do
     namespace :v1 do
