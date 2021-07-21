@@ -17,4 +17,14 @@ RSpec.describe 'find items by name' do
     expect(items[:data][1][:id].to_i).to eq(item2.id)
     expect(items[:data][2][:id].to_i).to eq(item3.id)
   end
+
+  it 'returns error if no item found' do
+    merchant1 = FactoryBot.create(:merchant)
+    create_list(:item, 20, merchant: merchant1)
+
+    get '/api/v1/items/find_all?name=aaaaa'
+    item = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(200)
+  end
 end
