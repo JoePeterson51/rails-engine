@@ -15,4 +15,14 @@ class Item < ApplicationRecord
   def self.find_all_by_name(search)
     Item.where('lower(name) LIKE ?', "%#{search.downcase}%")
   end
+
+  def self.find_by_min_price(price)
+    Item.where('unit_price >= ?', "#{price.to_i}")
+    .order(:name)[0]
+  end
+
+  def self.find_by_max_price(price)
+    Item.where('unit_price <= ?', "#{price.to_i}")
+    .order(:name)[0]
+  end
 end
