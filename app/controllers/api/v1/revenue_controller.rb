@@ -34,4 +34,14 @@ class Api::V1::RevenueController < ApplicationController
       render json: { error: "Invalid Search", data: {} }, status: 400
     end
   end
+
+  def unshipped_potential_revenue
+    quantity = params[:quantity] || 10
+    if quantity.present? && quantity.to_i != 0
+      invoices = Invoice.find_unshipped_potential_revenue(params["quantity"].to_i)
+      self.create_render(invoices, PotentialRevenueSerializer)
+    else
+      render json: { error: "Invalid Search", data: {} }, status: 400
+    end
+  end
 end

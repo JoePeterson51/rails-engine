@@ -4,7 +4,7 @@ class InvoiceItem < ApplicationRecord
   has_one :merchant, through: :item
 
   def self.find_revenue_between_dates(start, end_date)
-    a = joins({invoice: :transactions})
+    joins({invoice: :transactions})
     .where("invoices.created_at >= '#{start}' AND invoices.created_at <= '#{end_date}'")
     .where("transactions.result = ?", 'success')
     .group(:id)
