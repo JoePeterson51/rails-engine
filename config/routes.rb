@@ -1,31 +1,27 @@
 Rails.application.routes.draw do
-  get '/api/v1/items/find', to: 'api/v1/items_search#find'
-  get '/api/v1/items/find_all', to: 'api/v1/items_search#find_all'
-
-  get '/api/v1/merchants/find', to: 'api/v1/merchants_search#find'
-  get '/api/v1/merchants/find_all', to: 'api/v1/merchants_search#find_all'
-  get '/api/v1/merchants/most_items', to: 'api/v1/merchants_search#most_items'
-  get '/api/v1/revenue/merchants', to: 'api/v1/revenue#most_revenue'
-  get '/api/v1/revenue/merchants/:id', to: 'api/v1/revenue#merchant_revenue'
-
-  get '/api/v1/revenue', to: 'api/v1/revenue#date_revenue'
-
   namespace :api do
     namespace :v1 do
-      scope module: :merchants do
-        resources :merchants, only: [:index, :show] do
-          resources :items, only: [:index]
-        end
+      get '/items/find', to: 'items_search#find'
+      get '/items/find_all', to: 'items_search#find_all'
+
+      get '/merchants/find', to: 'merchants_search#find'
+      get '/merchants/find_all', to: 'merchants_search#find_all'
+      get '/merchants/most_items', to: 'merchants_search#most_items'
+
+      get '/revenue/merchants', to: 'revenue#most_revenue'
+      get '/revenue/merchants/:id', to: 'revenue#merchant_revenue'
+      get '/revenue', to: 'revenue#date_revenue'
+
+      resources :merchants, only: [:index, :show]
+
+      resources :items
+
+      namespace :merchants do
+        get '/:id/items', to: 'merchant_items#index'
       end
-    end
-  end
 
-  namespace :api do
-    namespace :v1 do
-      scope module: :items do
-        resources :items do
-          resources :merchant, only: [:index]
-        end
+      namespace :items do
+        get '/:id/merchant', to: 'item_merchants#index'
       end
     end
   end

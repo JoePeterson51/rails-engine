@@ -16,13 +16,18 @@ class Item < ApplicationRecord
     where('lower(name) LIKE ?', "%#{search.downcase}%")
   end
 
+  def self.find_by_price_range(min, max)
+    where("items.unit_price >= #{min.to_f} AND items.unit_price <= #{max.to_f}")
+    .order(:name)[0]
+  end
+
   def self.find_by_min_price(price)
-    where('unit_price >= ?', "#{price.to_i}")
+    where('unit_price >= ?', "#{price.to_f}")
     .order(:name)[0]
   end
 
   def self.find_by_max_price(price)
-    where('unit_price <= ?', "#{price.to_i}")
+    where('unit_price <= ?', "#{price.to_f}")
     .order(:name)[0]
   end
 end
