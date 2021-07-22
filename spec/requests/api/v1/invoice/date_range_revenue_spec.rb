@@ -28,4 +28,12 @@ RSpec.describe 'most revenue' do
 
     expect(revenue[:data][:attributes][:revenue]).to eq(2700.0)
   end
+
+  it 'returns 400 response status if dates not provided' do
+    get '/api/v1/revenue?'
+
+    revenue = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(400)
+  end
 end

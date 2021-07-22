@@ -18,8 +18,8 @@ class Api::V1::RevenueController < ApplicationController
 
   def date_revenue
     if params["start"].present? && params["end"].present?
-      revenue = InvoiceItem.find_revenue_between_dates(params["start"], params["end"])
-      render json: {data: {id: {}, attributes: {revenue: revenue}}}
+      revenue = Invoice.find_revenue_between_dates(params["start"], params["end"])
+      render json: {data: {id: nil, type: 'revenue', attributes: {revenue: revenue}}}
     else
       render json: { error: "Invalid Search", data: {} }, status: 400
     end
