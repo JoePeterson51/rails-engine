@@ -30,4 +30,14 @@ class Item < ApplicationRecord
     where('unit_price <= ?', "#{price.to_f}")
     .order(:name)[0]
   end
+
+  def self.find_top_items_revenue(item_amount)
+    joins(invoice_items: {invoice: :transactions})
+    .where("transactions.result = ?", 'success')
+    .where("invoices.status = ?", 'shipped')
+    .group(:id)
+    .select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) as revenue")
+    .order(revenue: :desc)
+    .limit(item_amount)
+  end
 end

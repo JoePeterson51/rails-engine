@@ -48,3 +48,4 @@ RSpec.describe 'most revenue' do
     expect(merchants[:error]).to eq("Invalid Search")
   end
 end
+
