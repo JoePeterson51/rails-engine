@@ -12,7 +12,7 @@ RSpec.describe 'most revenue' do
 
     @customer = FactoryBot.create(:customer)
 
-    @invoice_1 = Invoice.create!(status: "shipped", customer: @customer)
+    @invoice_1 = Invoice.create!(status: "shipped", customer: @customer, created_at: "2012-03-20")
 
     @transaction = Transaction.create!(result: "success", invoice: @invoice_1)
 
@@ -23,5 +23,9 @@ RSpec.describe 'most revenue' do
 
   it 'can return the revenue between certain dates' do
     get '/api/v1/revenue?start=2012-03-09&end=2012-03-24'
+
+    revenue = JSON.parse(response.body, symbolize_names: true)
+
+    expect(revenue[:data][:attributes][:revenue]).to eq(2700.0)
   end
 end
