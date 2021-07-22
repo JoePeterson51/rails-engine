@@ -13,7 +13,7 @@ class Api::V1::ItemsSearchController < ApplicationController
       item = Item.find_by_max_price(params["max_price"])
       self.create_render(item, ItemSerializer)
     else
-      render json: { error: "Item Not Found", data: {} }, status: 400
+      render json: { error: "Invalid Search", data: {} }, status: 400
     end
   end
 
@@ -22,7 +22,7 @@ class Api::V1::ItemsSearchController < ApplicationController
       item = Item.find_all_by_name(params["name"])
       self.create_render(item, ItemSerializer)
     else
-      render json: { data: {} }, status: 400
+      render json: { error: "Invalid Search", data: {} }, status: 400
     end
   end
 end

@@ -28,4 +28,24 @@ RSpec.describe 'update item request' do
     expect(item[:data][:attributes]).to have_key(:merchant_id)
     expect(item[:data][:attributes][:merchant_id]).to eq(14)
   end
+
+  it 'returns error if unit price is not an integer' do
+    merchant = FactoryBot.create(:merchant, id: 14)
+    post '/api/v1/items', params: {
+                                    "name": "value1",
+                                    "description": "value2",
+                                    "unit_price": 100.99,
+                                    "merchant_id": 14
+                                  }
+    patch "/api/v1/items/#{Item.first.id}", params: {
+                                    "name": "Dog toy",
+                                    "description": "A great toy for dogs",
+                                    "unit_price": "blah",
+                                    "merchant_id": 14
+                                  }
+
+    item = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(404)
+  end
 end

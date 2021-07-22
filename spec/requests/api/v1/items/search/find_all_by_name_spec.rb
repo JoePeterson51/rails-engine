@@ -18,13 +18,26 @@ RSpec.describe 'find items by name' do
     expect(items[:data][2][:id].to_i).to eq(item3.id)
   end
 
-  it 'returns error if no item found' do
+  it 'returns 200 status if no item found' do
     merchant1 = FactoryBot.create(:merchant)
     create_list(:item, 20, merchant: merchant1)
 
     get '/api/v1/items/find_all?name=aaaaa'
+
     item = JSON.parse(response.body, symbolize_names: true)
 
     expect(response.status).to eq(200)
+  end
+
+  it 'returns 400 and error message if params are invalid' do
+    merchant1 = FactoryBot.create(:merchant)
+    create_list(:item, 20, merchant: merchant1)
+
+    get '/api/v1/items/find_all?name='
+
+    item = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(400)
+    expect(item[:error]).to eq("Invalid Search")
   end
 end

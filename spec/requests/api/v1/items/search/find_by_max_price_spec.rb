@@ -7,10 +7,10 @@ RSpec.describe 'find item by max price' do
     item2 = FactoryBot.create(:item, name: 'bbb', unit_price: 7.5, merchant: merchant1)
     item3 = FactoryBot.create(:item, name: 'ccc', unit_price: 10.0, merchant: merchant1)
 
-    get "/api/v1/items/find?min_price=6"
+    get "/api/v1/items/find?max_price=6"
 
     items = JSON.parse(response.body, symbolize_names: true)
 
-    expect(items[:data][:attributes][:name]).to eq(item2.name)
+    expect(items[:data][:attributes][:name]).to eq(item1.name)
   end
 end

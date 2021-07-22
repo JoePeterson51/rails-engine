@@ -16,4 +16,25 @@ RSpec.describe 'find items by name' do
     expect(merchants[:data][1][:id].to_i).to eq(merchant2.id)
     expect(merchants[:data][2][:id].to_i).to eq(merchant3.id)
   end
+
+  it 'returns status 200 for no search found' do
+    create_list(:merchant, 40)
+
+    get "/api/v1/merchants/find_all?name=aaaa"
+
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(200)
+  end
+
+  it 'returns status 400 and error message if search invalid' do
+    create_list(:merchant, 40)
+
+    get "/api/v1/merchants/find_all?name="
+
+    merchant = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(400)
+    expect(merchant[:error]).to eq("Invalid Search")
+  end
 end

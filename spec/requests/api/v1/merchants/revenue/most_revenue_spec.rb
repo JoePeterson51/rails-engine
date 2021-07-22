@@ -29,4 +29,20 @@ RSpec.describe 'most revenue' do
     expect(merchants[:data][0][:id].to_i).to eq(@merchant_2.id)
     expect(merchants[:data][1][:id].to_i).to eq(@merchant_1.id)
   end
+
+  it 'will send an error if params arent present' do
+    get "/api/v1/revenue/merchants?quantity="
+
+    merchants = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(400)
+  end
+
+  it 'will send an error if params arent numbers' do
+    get "/api/v1/revenue/merchants?quantity=blahblahblah"
+
+    merchants = JSON.parse(response.body, symbolize_names: true)
+
+    expect(response.status).to eq(400)
+  end
 end
