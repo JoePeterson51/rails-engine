@@ -8,21 +8,21 @@ class Item < ApplicationRecord
   validates_presence_of :unit_price, presence: true
 
   def self.find_one_by_name(search)
-    Item.where('lower(name) LIKE ?', "%#{search.downcase}%")
+    where('lower(name) LIKE ?', "%#{search.downcase}%")
     .order(:name)[0]
   end
 
   def self.find_all_by_name(search)
-    Item.where('lower(name) LIKE ?', "%#{search.downcase}%")
+    where('lower(name) LIKE ?', "%#{search.downcase}%")
   end
 
   def self.find_by_min_price(price)
-    Item.where('unit_price >= ?', "#{price.to_i}")
+    where('unit_price >= ?', "#{price.to_i}")
     .order(:name)[0]
   end
 
   def self.find_by_max_price(price)
-    Item.where('unit_price <= ?', "#{price.to_i}")
+    where('unit_price <= ?', "#{price.to_i}")
     .order(:name)[0]
   end
 end
