@@ -42,7 +42,6 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    api-pagination (4.8.2)
     arel (9.0.0)
     bootsnap (1.7.5)
       msgpack (~> 1.0)
@@ -99,7 +98,6 @@ GEM
     nio4r (2.5.7)
     nokogiri (1.11.7-x86_64-darwin)
       racc (~> 1.4)
-    pagy (4.10.1)
     pg (1.2.3)
     pry (0.14.1)
       coderay (~> 1.1)
@@ -156,6 +154,8 @@ GEM
     rspec-support (3.10.2)
     ruby2_keywords (0.0.4)
     ruby_dep (1.5.0)
+    shoulda-matchers (5.0.0)
+      activesupport (>= 5.2.0)
     simplecov (0.21.2)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -185,7 +185,6 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
-  api-pagination
   bootsnap (>= 1.1.0)
   byebug
   factory_bot_rails
@@ -193,12 +192,12 @@ DEPENDENCIES
   faraday
   jsonapi-serializer
   listen (>= 3.0.5, < 3.2)
-  pagy
   pg (>= 0.18, < 2.0)
   pry
   puma (~> 3.11)
   rails (~> 5.2.6)
   rspec-rails
+  shoulda-matchers
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)
