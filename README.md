@@ -35,7 +35,7 @@ RSpec testing suite is utilized for testing this application.
 - Run the RSpec suite to ensure everything is passing as expected
 `bundle exec rspec`
 
-Postman can also be used for testing by following the instructions found ![here](https://backend.turing.edu/module3/projects/rails_engine/)
+Postman can also be used for testing by following the instructions found [here](https://backend.turing.edu/module3/projects/rails_engine/)
 
 ## DB Schema
 The following is a depiction of our Database Schema
