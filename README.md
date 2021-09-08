@@ -38,7 +38,7 @@ RSpec testing suite is utilized for testing this application.
 Postman can also be used for testing by following the instructions found [here](https://backend.turing.edu/module3/projects/rails_engine/)
 
 ## DB Schema
-The following is a depiction of our Database Schema
+The following is a depiction of the Database Schema
 
  ![Rails Engine Schema](https://user-images.githubusercontent.com/73974901/132574426-23ab0c11-4fa7-4dc7-9d00-b279abe13565.png)
 
